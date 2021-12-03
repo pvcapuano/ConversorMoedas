@@ -10,6 +10,7 @@ import {
   } from "react-bootstrap"
   import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
   import { faAngleDoubleDown } from "@fortawesome/free-solid-svg-icons"
+  import ListarMoedas from "../ListarMoedas/ListarMoedas"
 
 export const Formulario = () => {
     return(
@@ -39,13 +40,17 @@ export const Formulario = () => {
               value={1}
               required
               style={{width:"200px"}}
-              />
+              >
+                
+              </Form.Control>
             </Col>
             <Col sm="3">
               <Form.Control
               as="select"
               style={{width:"200px", marginTop:"20px"}}
-              />
+              >
+                <ListarMoedas />
+              </Form.Control>
             </Col>
             <Col sm="1" className="text-center" style={{paddingTop: "5px"}}>
               <FontAwesomeIcon  icon={faAngleDoubleDown}
@@ -56,7 +61,9 @@ export const Formulario = () => {
               <Form.Control 
               as="select"
               style={{width:"200px", marginTop:"20px"}}
-              />
+              >
+                <ListarMoedas />
+                </Form.Control>
             </Col>
             <Col sm="2">
               <Button variant="success" type="submit"
