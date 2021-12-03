@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { 
     Button,
     Form,
@@ -13,9 +13,36 @@ import {
   import ListarMoedas from "../ListarMoedas/ListarMoedas"
 
 export const Formulario = () => {
+
+  const [ valor, setValor ] = useState("1")
+  const [ moedaDe, setMoedaDe ] = useState("BRL")
+  const [ moedaPara, setMoedaPara ] = useState("USD")
+  const [ exibirSpinner, setExibirSpinner ] = useState(false)
+  const [ formValidar, setFormValidar ] = useState(false)
+
+  function handleValor(event){
+    setValor(event.target.value.replace(/\D/g, ""))
+  }
+
+  function handleMoedaDe(event){
+    setMoedaDe(event.target.value)
+  }
+
+  function handleMoedaPara(event){
+    setMoedaPara(event.target.value)
+  }
+
+  function converter(event){
+    event.preventDefault()
+    setFormValidar(true)
+    if(event.currentTarget.checkValidity() === true){
+      // implementar a chamada do fixer
+    }
+  }
+
     return(
       <>
-      <Alert variant="danger" show={true} >
+      <Alert variant="danger" show={true} style={{width: "210px", textAlign: "center"}} >
         Tente novamente
       </Alert>
         <Card 
@@ -26,7 +53,7 @@ export const Formulario = () => {
           background: "#E9ECEF"
           }}>
         
-        <Form>
+        <Form onSubmit={converter} noValidate validated={formValidar}>
           <Form.Label 
           style={{
             display:"flex", 
@@ -37,39 +64,48 @@ export const Formulario = () => {
             <Col sm="3">
               <Form.Control 
               placeholder="0"
-              value={1}
+              value={valor}
+              onChange={handleValor}
               required
-              style={{width:"200px"}}
+              style={{width:"210px"}}
               >
-                
               </Form.Control>
             </Col>
             <Col sm="3">
               <Form.Control
               as="select"
-              style={{width:"200px", marginTop:"20px"}}
+              value={moedaDe}
+              onChange={handleMoedaDe}
+              style={{width:"210px", marginTop:"20px"}}
               >
                 <ListarMoedas />
               </Form.Control>
             </Col>
             <Col sm="1" className="text-center" style={{paddingTop: "5px"}}>
               <FontAwesomeIcon  icon={faAngleDoubleDown}
-              style={{width:"200px", marginTop:"20px"}}
+              style={{width:"210px", marginTop:"20px"}}
               />
             </Col>
             <Col sm="3">
               <Form.Control 
               as="select"
-              style={{width:"200px", marginTop:"20px"}}
+              style={{width:"210px", marginTop:"20px"}}
+              value={moedaPara}
+              onChange={handleMoedaPara}
               >
                 <ListarMoedas />
                 </Form.Control>
             </Col>
             <Col sm="2">
               <Button variant="success" type="submit"
-              style={{width:"200px", marginTop:"20px"}}
-              >Converter
+              style={{width:"210px", marginTop:"20px"}}
+              >
+              <span className={exibirSpinner ? "hidden" : null}>  
+                Converter
+              </span>
+              <span className={exibirSpinner ? null : "hidden"}>
               <Spinner animation="border" size="sm" />
+              </span>
               </Button>
             </Col>
           </Form.Label>
