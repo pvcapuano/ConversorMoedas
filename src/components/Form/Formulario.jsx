@@ -11,14 +11,21 @@ import {
   import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
   import { faAngleDoubleDown } from "@fortawesome/free-solid-svg-icons"
   import ListarMoedas from "../ListarMoedas/ListarMoedas"
+  import axios from "axios"
 
 export const Formulario = () => {
+
+  const APIKey = process.env
+  const FixerUrl = `http://data.fixer.io/api/latest?access_key=${APIKey}
+  `
 
   const [ valor, setValor ] = useState("1")
   const [ moedaDe, setMoedaDe ] = useState("BRL")
   const [ moedaPara, setMoedaPara ] = useState("USD")
   const [ exibirSpinner, setExibirSpinner ] = useState(false)
   const [ formValidar, setFormValidar ] = useState(false)
+  const [ exibirModal, setExibirModal ] = useState(false)
+  const [ resultadoConversao, setResultadoConversao ] = useState("")
 
   function handleValor(event){
     setValor(event.target.value.replace(/\D/g, ""))
@@ -32,11 +39,20 @@ export const Formulario = () => {
     setMoedaPara(event.target.value)
   }
 
+  function handleFecharModal(event){
+    setValor("1")
+    setMoedaDe("BRL")
+    setMoedaPara("USD")
+    setFormValidar(false)
+    setExibirModal(false)
+  }
+
   function converter(event){
     event.preventDefault()
     setFormValidar(true)
     if(event.currentTarget.checkValidity() === true){
       // implementar a chamada do fixer
+      setExibirModal(true)
     }
   }
 
@@ -110,15 +126,15 @@ export const Formulario = () => {
             </Col>
           </Form.Label>
         </Form>
-        <Modal show={false}>
+        <Modal show={exibirModal} onHide={handleFecharModal}>
           <Modal.Header closeButton>
             <Modal.Title>Conversão</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            Resultado da conversão
+            {resultadoConversao}
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="success">
+            <Button variant="success" onClick={handleFecharModal}>
               Nova conversão
             </Button>
           </Modal.Footer>
