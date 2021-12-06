@@ -26,6 +26,7 @@ export const Formulario = () => {
   const [ formValidar, setFormValidar ] = useState(false)
   const [ exibirModal, setExibirModal ] = useState(false)
   const [ resultadoConversao, setResultadoConversao ] = useState("")
+  const [ exibirMsgErro, setExibirMsgErro ] = useState(false)
 
   function handleValor(event){
     setValor(event.target.value.replace(/\D/g, ""))
@@ -58,10 +59,15 @@ export const Formulario = () => {
       axios.get(FixerUrl)
       .then(res => {
         const cotacao = obterCotacao(res.data)
+        if(cotacao) {
         setResultadoConversao(`${valor} ${moedaDe} = ${cotacao} ${moedaPara}`)
         setExibirModal(true)
         setExibirSpinner(false)
-      })
+        setExibirMsgErro(false)
+      } else {
+        exibirErro()
+      }
+      }).catch(err => exibirErro())
     }
   }
 
@@ -75,9 +81,14 @@ export const Formulario = () => {
     return cotacao.toFixed(2)
   }
 
+  function exibirErro(){
+    setExibirMsgErro(true)
+    setExibirSpinner(false)
+  }
+
     return(
       <>
-      <Alert variant="danger" show={true} style={{width: "210px", textAlign: "center"}} >
+      <Alert variant="danger" show={exibirMsgErro} style={{width: "210px", textAlign: "center"}} >
         Tente novamente
       </Alert>
         <Card 
