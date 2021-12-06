@@ -15,8 +15,8 @@ import {
 
 export const Formulario = () => {
 
-  const APIKey = process.env
-  const FixerUrl = `http://data.fixer.io/api/latest?access_key=${APIKey}
+  
+  const FixerUrl = `http://data.fixer.io/api/latest?access_key=c4a8674392c7f1aa0cc5f2b1e72293ae
   `
 
   const [ valor, setValor ] = useState("1")
