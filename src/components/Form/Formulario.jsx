@@ -143,7 +143,7 @@ export const Formulario = () => {
                 </Form.Control>
             </Col>
             <Col sm="2">
-              <Button variant="success" type="submit"
+              <Button variant="success" data-testid="btn-converter" type="submit"
               style={{width:"210px", marginTop:"20px"}}
               >
               <span className={exibirSpinner ? "hidden" : null}>  
@@ -156,7 +156,7 @@ export const Formulario = () => {
             </Col>
           </Form.Label>
         </Form>
-        <Modal show={exibirModal} onHide={handleFecharModal}>
+        <Modal show={exibirModal} onHide={handleFecharModal} data-testid="modal">
           <Modal.Header closeButton>
             <Modal.Title>Conversão</Modal.Title>
           </Modal.Header>

@@ -1,8 +1,27 @@
-import { render, screen } from '@testing-library/react';
-import App from './App';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { render, fireEvent } from '@testing-library/react';
+import '@testing-library/jest-dom/extend-expect';
+import axiosMock from 'axios';
+import { Formulario } from "../src/components/Form/Formulario"
 
-test('Deve renderizar o componente sem erros', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/conversor de moedas/i);
-  expect(linkElement).toBeInTheDocument();
+describe('Teste do componente de conversão de moedas', () => {
+
+  it('deve renderizar o componente sem erros', () => {
+    const div = document.createElement('div');
+    ReactDOM.render(<Formulario />, div);
+    ReactDOM.unmountComponentAtNode(div);
+  });
+
+  it('deve simular uma conversão de moedas', async () => {
+    const { findByTestId, getByTestId } = render(<Formulario />);
+    axiosMock.get.mockResolvedValueOnce({
+      data: {success: true, rates: { BRL: 4.564292, USD: 1.101049 }}
+    });
+    fireEvent.click(getByTestId('btn-converter'));
+    const modal = await findByTestId('modal');
+    expect(axiosMock.get).toHaveBeenCalledTimes(1);
+    expect(modal).toHaveTextContent('1 BRL = 0.24 USD');
+  });
+
 });
